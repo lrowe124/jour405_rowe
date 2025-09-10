@@ -1,8 +1,8 @@
 ---
 title: "UMD Fees"
-date: 8-25-2025
+date: 9-08-2025
 ---
-
+Your Name- Luke Rowe
 Follow along with the demo to learn how to calculate percentage change using R and the Tidyverse. You should get started by loading the tidyverse in a new R block.
 
 
@@ -58,11 +58,36 @@ umd_fees |>
 
 ```
 
+### Mutate exercise
+
+Mutate is a powerful command that allows you to create a new column and fill it with the results of another calculation. We will be using it a lot.
+
+In this demonstration, we calculate the total number of incidents per year for each category using `mutate()`, calling the new column `total_fees`. 
+
+Then calculate the average number of incidents per month for each category of crime, calling the new column `average_fees`. Assign the result to a new dataframe called `umd_fee_averages`.
+
+
+```{r}
+
+umd_fees_pct <- umd_fees |> 
+  mutate(total_fees1 = fall_2024 + fall_2023 + fall_2022 + fall_2021) |> 
+  mutate(total_fees = rowSums(across(2:5))) |> 
+  mutate(average_fees = total_fees/4)
+
+```
+
+Note that lines 73 and 74 do the same thing. 
+Line 74 is preferred because there's less typing! rowSums(across) tells R to add across the rows. We specify rows 2 through 5.
+
+
+PRO TIP! Remember this mutate command for the homework.
+HINT HINT HINT
+
 ### Task 6: Describe our results
 
 Write a few sentences about what you found in the data. What's the story here?
 
-
+#The data reveals some interesting trends over the past 4 years. For one, athletic spending has remained consistent at $399 million. This is especially interesting given UMD's adoption of NIL. Looking into this data could reveal a compelling story. Another point of interest for me is the continued reduction in funding for counseling services, starting at $50 million in 2021 before decreasing to 0 by 2021. I wonder why this is, especially since counseling already has such little resources compared to other services. I've heard many students complain about the counseling center, so I think an interesting story could involve investigating the cause of this drop in funds while including student opinions on this trend.
 
 
 
