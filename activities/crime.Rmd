@@ -1,0 +1,52 @@
+---
+title: "Crime Rates"
+---
+
+Follow along with the demo to learn how to calculate crime rates using R and the Tidyverse. We'll also introduce a new library, janitor, which helps make column names easier to work with. You should get started by loading the tidyverse in a new R block, then install and load janitor.
+
+### Task 1: Load the tidyverse and install and load janitor
+
+```{r}
+library(tidyverse)
+install.packages("janitor")
+library(janitor)
+```
+
+
+
+### Task 2: Load the crime dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_annual_crime.csv
+
+```{r}
+crimes <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_annual_crime.csv") |> clean_names()
+```
+
+
+### Task 3: Use janitor to clean up the column names
+
+
+
+### Task 4: Calculate the total crime rate for each year (picking our unit!)
+
+```{r}
+crimes |> mutate(total_rate = grand_total/population * 10000)
+```
+
+
+
+### Task 5: Calculate the violent and property crime rates for each year (same unit)
+
+```{r}
+crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/population * 10000, property_rate = property_crime_total/population * 10000)
+```
+
+
+
+### Task 6: Describe our results
+
+Write a few sentences about what you found in the data. What years had the highest crime rates? What years had the lowest crime rates? Does the pattern match your expectations?
+
+It seems like the highest rates of violent crime were in the early to mid 1990's, with 1992 being the peak. I find this pretty unsurprising considering how much of a focus there was politically on managing violent crime during this time. Two particularly consequential things that happened around this time were the passing of the Biden-Thurmond Violent Crime Control Act of 1991 and the Violent Crime Control and Law Enforcement Act of 1994. Both of these bills placed a very large emphasis on finding and prosecuting violent crime, and so I think it's unsurprising that these acts led to more arrests and charges for violent crimes. The year with the highest rate of property crime was 1980. Something I noticed is that years with the highest rates of property crime have pretty high rates of violent crime as well. In 1980, for example, the violent crime rate was around 85, which is the sixth highest rate for violent crime in the data. I think this correlation is worth investigating.
+
+
+When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
+
