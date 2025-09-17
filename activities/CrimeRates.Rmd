@@ -45,7 +45,7 @@ crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/populat
 
 Write a few sentences about what you found in the data. What years had the highest crime rates? What years had the lowest crime rates? Does the pattern match your expectations?
 
-
+It seems like the highest rates of violent crime were in the early to mid 1990's, with 1992 being the peak. I find this pretty unsurprising considering how much of a focus there was politically on managing violent crime during this time. Two particularly consequential things that happened around this time were the passing of the Biden-Thurmond Violent Crime Control Act of 1991 and the Violent Crime Control and Law Enforcement Act of 1994. Both of these bills placed a very large emphasis on finding and prosecuting violent crime, and so I think it's unsurprising that these acts led to more arrests and charges for violent crimes. The year with the highest rate of property crime was 1980. Something I noticed is that years with the highest rates of property crime have pretty high rates of violent crime as well. In 1980, for example, the violent crime rate was around 85, which is the sixth highest rate for violent crime in the data. I think this correlation is worth investigating.
 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
