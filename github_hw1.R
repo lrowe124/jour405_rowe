@@ -1,3 +1,9 @@
 luke405
 
-#1.1
+#1.1 
+x<-1
+y<-2
+z<-3
+#1.2
+print("Hello_World")
+
