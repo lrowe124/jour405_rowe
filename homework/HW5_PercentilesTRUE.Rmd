@@ -1,0 +1,81 @@
+---
+title: "HW4 MD CityCrime"
+---
+
+In this assignment, we will be working with a dataset of total crimes reported by Maryland cities for two consecutive years. You'll load the data, calculate the violent and property crime rates for each city for both years, and then calculate the percentage change in the crime rates between the two years. You'll also write a short story based on your findings.
+
+### Task 1: Load the Tidyverse and Janitor
+
+You will need to load the tidyverse library and the janitor library
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+Then you'll load the data from the web. The URL for the data is: https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_cities_crime_2019_2020.csv. You will create a dataframe called `md_cities` that contains the data from this URL.
+
+### Task 2: Load the Data
+
+```{r}
+md_cities <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_cities_crime_2019_2020.csv")
+```
+### Task 3: Calculating Rates
+
+Calculate violent and property crime rates for each city for both years using `mutate()`. You'll create four new columns: `violent_rate_2019`, `property_rate_2019`, `violent_rate_2020`, and `property_rate_2020`. You'll need to figure out the proper unit rate, given that there are varying populations. There's no perfect choice; choose the one that works best for you. Save the results to a new dataframe called `md_cities_rates`.
+
+```{r}
+md_cities_rates <- mutate(md_cities,  violent_rate_2019 = violent2019/pop2019 * 1000, property_rate_2019 = property2019/pop2019 * 1000, violent_rate_2020 = violent2020/pop2020 * 1000, property_rate_2020 = property2020/pop2020 * 1000)
+```
+
+### Task 4: Describe the Rates
+
+Examine the new dataframe, `md_cities_rates`, by clicking on it in the Environment tab in RStudio and sorting by the rate columns. Write a couple of sentences about the results, comparing and contrasting the cities with the highest rates (both violent and property) in 2019 and 2020. Do you see any patterns? What does this tell you about crime in Maryland cities? What's the story here?
+
+ANSWER HERE
+A pattern I initially saw was that violent crime tends to be correlated to population in certain cases. The biggest example is Baltimore, which is the city with both the highest crime and population in the state. Ocean City has the highest rate of property crime as well as the second highest in violent crime, however. This is especilaly interesting given its much smaller population to Baltimore. This suggests that parts of it may actually be less safe than the city of Baltimore, even with its smaller population.
+
+### Task 5: Calculate Percentage Change
+
+Let's add two percentage change columns to your dataframe: one for violent crime rates and one for property crime rates. You'll calculate the percentage change between 2019 and 2020 for each city. Save the results to a new dataframe called `md_cities_change`.
+
+```{r}
+md_cities_change <- mutate(md_cities_rates, violent_change = (violent_rate_2020 - violent_rate_2019)/violent_rate_2019 * 100, property_change = (property_rate_2020 - property_rate_2019)/property_rate_2019 * 100)
+```
+
+### Task 7: Describe Percentage Changes
+
+Look at the `md_cities_change` dataframe by clicking on it in the Environment tab in RStudio. Write a couple of sentences describing the percentage change results. What's more interesting here, the patterns or the outliers? What's the story in the data?
+
+ANSWER HERE
+I think one of the most informative parts of this dataframe is how important context is for percentage change. For example, several cities had a -100% change in violent crime from 2019 to 2020, but the majority of them went from a small single digit number to zero. This is definitely a change worth noting, but doing so without that context may give people the wrong impression. AN interesting pattern I found in property crime percentage change was that 3 of the top 5 cities were in Montgomery County.
+
+### Task 8: Tell the Best Story
+
+Write up a lede and nutgraf of a story with the _best_ story idea you've found in this assignment. The lede should be a single sentence that summarizes the most important information in the data. The nutgraf should be a paragraph that provides more context and explains why the data is important.
+
+ANSWER HERE
+Analysis of recent crime data has shown that despite its low population, residents of Ocean City were some of the most vulnerable people in the state to both violent and property crime in 2019 and 2020.
+
+This data is based on analysis of incidents of each from of crime compared with the city's population. Ocean City ranked first in property crime and second in violent crime, beaten only by Baltimore which dwarfs it in population size. This suggests that although more violent crimes may have occurred in those two years, they. occurred at a similar rate in Ocean City
+
+### Task 9: Save Your Work and Put it on GitHub
+
+Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 10
+
+```{r}
+md_cities_percentiles <- mutate(md_cities_change, percentile = ntile(violent_rate_2020, 100))
+
+```
+
+There are 10 cities above the 90th percentile. They are as follows: Clear Spring, Cumberland, Salisbury, Seat Pleasant, Elkton, Williamsport, Kittzmiller, Princess Anne, Cambridge, Baltimore and Ocean City
+
+```{r}
+IQR = IQR(md_cities_percentiles$violent_rate_2020)
+IQR
+```
+4.198895
+
+I think it does change the my best story idea as I can now use percentiles to help explain the cities with the highest rate of violent crime in 2020. I could format the story like a listicle or top 10, using property crime rates as well when I feel it is appropriate. I can even still include Ocean City since it is listed as one of the 10 above the 90th percentile.
