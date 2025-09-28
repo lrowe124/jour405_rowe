@@ -66,3 +66,11 @@ ANSWER HERE
 ### Task 8: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 9
+
+md_cities_change |> mutate(percentile = ntile(violent_rate_2020, 100))
+
+###  Four cities have a percentile over 90: Baltimore, Cambridge, CLear Spring and Elkton
+18, 33, 45
+

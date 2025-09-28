@@ -76,6 +76,6 @@ There are 10 cities above the 90th percentile. They are as follows: Clear Spring
 IQR = IQR(md_cities_percentiles$violent_rate_2020)
 IQR
 ```
-[1 4.198895]
+4.198895
 
 I think it does change the my best story idea as I can now use percentiles to help explain the cities with the highest rate of violent crime in 2020. I could format the story like a listicle or top 10, using property crime rates as well when I feel it is appropriate. I can even still include Ocean City since it is listed as one of the 10 above the 90th percentile.
