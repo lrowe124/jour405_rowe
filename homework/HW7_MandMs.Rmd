@@ -6,26 +6,58 @@ In this assignment, you'll be picking up where you left off with the M&Ms activi
 
 ### Task 1: Load the tidyverse
 
+```{r}
+library(tidyverse)
+```
+
 
 ### Task 2: Load the M&Ms dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/mandms.csv
 
+```{r}
+MMs <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/mandms.csv")
+```
+
 
 ### Task 3: Sample 5 rows of data from the dataset
+
+```{r}
+sample_5 <- MMs |>
+  sample_n(5)
+
+```
+
 
 
 ### Task 4: Calculate the mean age and standard deviation of the sample, using either the blue or white number of M&Ms
 
 
+```{r}
+sample_5 |> summarize(mean = mean(black), sd = sd(black))
+
+```
+
+
+
+
 ### Task 5: Calculate the mean age and standard deviation of the population, using the same measure as in Task 4
+
+```{r}
+MMs |> summarize(mean = mean(black), sd = sd(black))
+
+
+```
 
 
 ### Task 6: Compare the sample and population statistics
 
 Compare the two sets of means and standard deviations. Are they similar?
+ The standard deviations are very similar, with the population's being only .5 larger than the sample's. There is a little more variance in the means, with the population mean being almost 4 higher than the sample mean.
+
 
 ### Task 7: Describe the results
 
 Write a few sentences about what you found in the data. What does this tell you about the M&Ms dataset and about the act of random sampling?
 
+I think the most important takeaway is that random samples are hard to predict. This sample was actually pretty similar for both the mean and the standard deviation, especially since the standard deviation for both were almost the same. Other samples taken from the data, like if I chose red instead of black, may have yielded more variance in both measures.
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
