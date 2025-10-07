@@ -1,0 +1,85 @@
+---
+title: "HW7_MandMs"
+date: 10/1/2025
+---
+
+
+In this assignment, you'll be picking up where you left off with the M&Ms activity. You'll load the data and perform some basic statistical analysis. Follow the steps below to complete the assignment.
+
+### Task 1: Load the tidyverse
+
+```{r}
+library(tidyverse)
+library(tibble)
+```
+
+
+### Task 2: Load an M&Ms dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/mandms.csv
+```{r}
+
+MMs <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/mandms.csv")
+```
+
+
+```{r}
+MMs <- tibble::rownames_to_column(MMs, "Sample")
+```
+
+
+
+
+### Task 3: Sample 5 rows of data from the dataset, and then sample 10 rows, saving each to separate dataframes called sample5 and sample10. Be sure to use set.seed(1234) before you start.
+```{r}
+sample_5 <- MMs |>
+  sample_n(5)
+sample_10 <- MMs |>
+  sample_n(10)
+
+```
+
+
+### Task 4: Calculate the mean, median and standard deviation of red M&Ms from each of the samples.
+```{r}
+sample_5 |> summarize(mean = mean(red), median = median(red), sd = sd(red))
+sample_10 |> summarize(mean = mean(red), median = median(red), sd = sd(red))
+```
+
+
+### Task 5: Calculate the mean, median and standard deviation of red M&Ms from the population
+
+```{r}
+MMs |> summarize(mean = mean(red), median = median(red), sd = sd(red))
+```
+
+### Task 6: Make three histograms: one each for sample5, sample10 and the original dataset. Include a headline. Use a consistent binwidth.
+
+```{r}
+ggplot(MMs, aes(red)) +
+    geom_histogram(aes()) 
+ggplot(sample_5, aes(red)) +
+    geom_histogram()
+ggplot(sample_10, aes(red)) +
+    geom_histogram()
+```
+
+
+### Task 7: Answer questions
+
+
+Compare the three sets of means, standard deviations and histograms. Which are more helpful to you in understanding the accuracy of the samples?
+
+I think that the means and standard deviations are the most helpful when determining the samples' accuracy. This is because they give you easily comparable information for each sample that allows an easy conclusion to be drawn about how accurate each sample is.
+
+What does this exercise tell you about the relationship between sample size and estimate accuracy?
+
+This exercise has told me that the higher the sample size, generally the more accurate it will be as a reflection of the whole. This is because the mean and median for sample 10, a larger sample, were both almost the exact same as the corresponding measurements for the whole population.
+
+How does random sampling introduce variation into statistical estimates?
+
+Random sampling introduces variance into statistical estimates because it is random. The sample is not bound by a methodology or stratification process, so the sample taken from the whole can reflect any part of the data and often not its full identity.
+
+If you repeated this process, would the samples always be identical? Why or why not?
+
+The samples would not be identical because each sample is random, and thus not able to be perfectly replicated in repeat trials.
+
+When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
