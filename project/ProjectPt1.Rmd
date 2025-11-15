@@ -9,6 +9,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-
+library(tidyverse)
 ```
 
+```{r}
+Songs <- read_csv("Billboard_Data.csv")
+```
+
+**The data set I have selected is the Billboard Hot 100 Number Ones Database, which features all the songs that topped the Billboard Hot 100 charts from August 4, 1958 to January 11, 2025. The data was originally compiled by artist and writer Chris Dalla Riva for his book; "Uncharted Territory: What Numbers Tell Us about the Biggest Hit Songs and Ourselves." The database is also instrumental in his weekly newsletter, "Can't Get Much Higher," that explores the intersection between music and data. It can also be found in the Princeton University Library.
+
+Can't Get Much Higher: https://www.cantgetmuchhigher.com/
+Princeton University Library: https://dss.princeton.edu/catalog/resource8613
+
+**I think that the most important categories for me will be the "Divisiveness," "Discogs Genre," "Discogs Style" and the "Weeks at Number One" categories. I think that I want to investigate the "Divisiveness" category and its impact on how long songs stay at the top of the Billboard Hot 100. 
+
+**I think that I am missing some context on what exactly "Divisiveness" means for this database, as well as how it was measured. I think that if I can find this out, it will amplify my understanding of the category and inform the methodology of my data analysis. Another thing that could be helpful to know is if artists belonged to races other than black. If I am not mistaken, the database only takes note of if the artist(s) was black, and I think data on the prevalence of other races could be helpful.
+
+```{r}
+Songs |> summarize(mean = mean(Divisiveness), median = median(Divisiveness), minimum = min(Divisiveness), maximum = max(Divisiveness))
+```
+
+As I mentioned previously, I want to take a look at how a songs divisiveness affected its performance on Hot 100. This requires a thorough analysis of the "Divisiveness," category, and how a song's divisiveness is determined in the first place. For this, I'll have to look into the original dataset as well as Dalla Riva's newsletter to see if I can get a good grasp on what informed the category. Once this is understood I want to use different genres to better understand this category, and see if I can draw correlations between different genres, how divisive they are and if this impacts how long they stay at the top. I think that historical analysis of the music industry and the popular genres at any given time can be helpful for this as well, as it will provide context for how popular the song's genre was at the time it went number one. Finally, I will have to test these correlations for significance using tools like the t-test and ANOVA. This will tell me whether or not I can draw conclusions based on these correlations, and will ultimately inform the structure the story.
