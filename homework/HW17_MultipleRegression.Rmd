@@ -1,9 +1,8 @@
 ---
 title: "Multiple Regression Analysis: Maryland Voter Turnout"
-name: "YOUR NAME HERE"
+name: Luke Rowe
 date: 8-24-2025
 ---
-
 # Introduction
 
 Multiple regression analysis is a statistical method used to understand the relationship between one dependent variable and two or more independent variables. This analysis is particularly useful in journalism for exploring complex relationships in civic data, such as how different demographic and socioeconomic factors collectively impact voter turnout. By understanding these relationships, journalists can provide deeper insights into civic participation patterns and identify potential barriers to voting.
@@ -28,7 +27,7 @@ head(md_turnout)
 Before building our model, let's explore the data to understand the variables and their relationships. Examine the correlation matrix to see how the independent variables relate to each other and to the dependent variable (voter turnout). Which variables seem to be correlated? Are there any that are not correlated at all? Also look at the multiple scatterplots. Which variables seem to have a linear relationship with the dependent variable? Which do not?
 
 ANSWER HERE
-
+Income seems to be strongly correlated with a having a bachelors degree or higher, with a value of .75. It also seems to be correlated somewhat to turnout, at around .45. This is not very significant, but compared to other coreelations it is pretty high. the percentage of being white also seems to be negatively coreelated with the percentage of being unemployed, at -.58.
 
 ```{r}
 # Summary statistics
@@ -91,6 +90,7 @@ The coefficients tell us the estimated effect of each independent variable on th
 Examine the output of the model, checking the coefficients, residuals, and overall model fit. How well does this multiple variable model predict turnout? Do any of the variables seem to be insignificant? Is this a useful model, based on what you've seen? Why?
 
 ANSWER HERE
+I think the model does an okay job of predicting turnout, as it highlights two variables which I believe to be significant: income and the percentage of having a bachelors or higher. Both of these show a correlation, with the percentage of having a bachelors or higher being the strongest correlation at .83. I feel like the populaiton variable might be a little insignificant, as its hard for me to draw any noteworthy conslusions based on the relatively strong correlation it shows. Overall, i think the model can be helpful for understanding voter turnout, but can be made more clear by better choice in variables.
 
 ```{r}
 # Build initial model with all predictors
@@ -105,18 +105,21 @@ summary(initial_model)
 Create three alternative models by adding or removing variables to see if we can improve the model's performance. Turnout will always be the dependent variable, but you should alter the independent variables by removing or adding some. Then compare the models using adjusted R-squared values. Are any of the models significantly better than the others?
 
 ANSWER HERE
+My model two, which was found by just removing the population, is slightly better than the full model. My model 4, which only looks at the percentage of white voters and their age, is significantly worse than any model based on adjusted R-squared values.
 
 ```{r}
 # Model 2
-model2 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+model2 <- lm(turnout ~ income + pct_bachelors_higher + 
+                   pct_unemployed + median_age + pct_white , data = md_turnout)
 summary(model2)
 
 # Model 3
-model3 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+model3 <- lm(turnout ~ pct_bachelors_higher + 
+                   pct_unemployed + median_age + pct_white, data = md_turnout)
 summary(model3)
 
 # Model 4
-model4 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+model4 <- lm(turnout ~ median_age + pct_white, data = md_turnout)
 summary(model4)
 
 # Compare models
@@ -146,3 +149,4 @@ ggplot(model_comparison, aes(x = reorder(Model, Adjusted_R_squared), y = Adjuste
 Without using the words "multiple regression model", describe how you could use this analysis to cover an election or voter participation story.
 
 ANSWER HERE
+Recent analysis of multiple factors found that higher income residents with bachelor's degrees or higher were ht emost likely to come out to vote this election.
