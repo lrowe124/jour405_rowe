@@ -20,9 +20,9 @@ library(scales)
 ```
 
 ```{r}
-Songs <- read_csv("Billboard_Data.csv") |> 
-#rsw comment
-  clean_names()
+Songs <- read_csv("Billboard_Data.csv")
+
+ 
 ```
 Explain divisiveness as the disagreement among three judges. 
 Get a mean, median and sd of the rthree judge's ratings.
@@ -72,6 +72,9 @@ divisiveness_summary
 
 I chose to use a z-test to find out how each divisiveness score related to the mean. This told me more about variation within the divisiveness category, and how reliable the mean will be. The most the lowest songs all had a Z-score of -1.61, which suggests that they were much lower than the mean. Additionally, the song with the highest Z-score had one of 3.23, which suggest and extremely high score compared to the mean.
 
+
+
+
 ```{r}
 Divisive_Songs <- Songs |>
   mutate(
@@ -87,6 +90,11 @@ Divisive_Songs <- Songs |>
 What does divisiveness mean and how is it presented in the data
 NULL Hypothesis: There is little to no variation in divisivness
 ALTERNATE HYPOTHESIS: XXXX
+
+```{r}
+
+  )
+```
 
 
 

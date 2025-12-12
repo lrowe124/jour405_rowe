@@ -1,0 +1,132 @@
+---
+title: "test"
+output: html_document
+date: "2025-11-12"
+---
+Name and assignment and date
+
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(lubridate)  
+library(knitr)     
+library(scales)
+library(janitor)
+
+```
+
+```{r}
+Songs <- read_csv("Billboard_Data.csv") |>
+  clean_names()
+  
+```
+Explain divisiveness as the disagreement among three judges. 
+Get a mean, median and sd of the rthree judge's ratings.
+
+
+
+**The data set I have selected is the Billboard Hot 100 Number Ones Database, which features all the songs that topped the Billboard Hot 100 charts from August 4, 1958 to January 11, 2025. The data was originally compiled by artist and writer Chris Dalla Riva for his book; "Uncharted Territory: What Numbers Tell Us about the Biggest Hit Songs and Ourselves." The database is also instrumental in his weekly newsletter, "Can't Get Much Higher," that explores the intersection between music and data. It can also be found in the Princeton University Library.
+
+Can't Get Much Higher: https://www.cantgetmuchhigher.com/
+Princeton University Library: https://dss.princeton.edu/catalog/resource8613
+
+**I think that the most important categories for me will be the "divisiveness," "Discogs Genre," "Discogs Style" and the "Weeks at Number One" categories. I think that I want to investigate the "divisiveness" category and its impact on how long songs stay at the top of the Billboard Hot 100. 
+
+**I think that I am missing some context on what exactly "divisiveness" means for this database, as well as how it was measured. I think that if I can find this out, it will amplify my understanding of the category and inform the methodology of my data analysis. Another thing that could be helpful to know is if artists belonged to races other than black. If I am not mistaken, the database only takes note of if the artist(s) was black, and I think data on the prevalence of other races could be helpful.
+
+```{r}
+Songs |> summarize(mean = mean(divisiveness), median = median(divisiveness), minimum = min(divisiveness), maximum = max(divisiveness))
+```
+
+As I mentioned previously, I want to take a look at how a songs divisiveness affected its performance on Hot 100. This requires a thorough analysis of the "divisiveness," category, and how a song's divisiveness is determined in the first place. For this, I'll have to look into the original dataset as well as Dalla Riva's newsletter to see if I can get a good grasp on what informed the category. Once this is understood I want to use different genres to better understand this category, and see if I can draw correlations between different genres, how divisive they are and if this impacts how long they stay at the top. I think that historical analysis of the music industry and the popular genres at any given time can be helpful for this as well, as it will provide context for how popular the song's genre was at the time it went number one. Finally, I will have to test these correlations for significance using tools like the t-test and ANOVA. This will tell me whether or not I can draw conclusions based on these correlations, and will ultimately inform the structure the story.
+
+
+NULL HYPOTHESIS: The "divisiveness" category has no impact on how long a song remained at number 1 on the Billboard Hot 100
+ALTERNATE HYPOTHESIS: The "divisiveness" category has a statistically significant impact on how long a song remained at number 1 on the Billboard Hot 100.
+
+I chose to calculate some advanced statistics for this dataset to better visualize and understand the data. I calculated the mean for both divisiveness and weeks at number one, as well as the standard deviation for divisiveness. I also calcultated the margin of error, the standard error, and both confidence intervals. These stats gave me a fuller set of the data and helped me decide which tests to try and run. 
+
+```{r}
+divisiveness_summary <- Songs |> 
+  summarize(
+    mean_divisiveness = mean(divisiveness),
+    sd_divisiveness = sd(divisiveness),
+    mean_weeks = mean(`weeks_at_number_one`),
+    se_divisiveness = sd_divisiveness / sqrt(1177),
+    margin_error = 1.96 * se_divisiveness,
+    ci_lower = mean_divisiveness - margin_error,
+    ci_upper = mean_divisiveness + margin_error
+  )
+
+
+divisiveness_summary
+
+```
+
+#rsw comment: interpret the results here - what does a 1.55 average mean considering a 0 minimum and a 5 maximum? what does the SD result mean
+
+An average mean of 1.55 for divisiveness is relatively low considering the minimum is 0 and the maximum is 5.33. 1.55 is less than half, which tells me that the average song that topped the Billboard Hot 100 was not that divisive. A standard deviation of .96 means that roughly 2/3 of the data lies within .96 of the mean of 1.55. In other words, most of the data is between .59 and 2.52. These values were found by subtracting the standard deviation from the mean and adding it to the mean respectively. These calculations further strengthen my conclusion that most songs that top the Hot 100 are not that divisive, as around 2/3 of the songs have a score of less than half the maximum divisiveness score.
+
+
+
+I chose to use a z-test to find out how each divisiveness score related to the mean. 
+My Null and Alternate Hypotheses are as follows:
+NULL Hypothesis: There is not a notable level of variation in divisiveness
+ALTERNATE HYPOTHESIS: There is a notable level of variation in the divisiveness category
+
+This told me more about variation within the divisiveness category, and how reliable the mean will be. I also found the mean and median weeks at number one, which were 2.9 and 2 respectively. The most telling piece of information form this analysis is that the songs with the highest z-score all had some of the highest divisiveness scores overall. For example, Mark Dinning's "Teen angel" is the most divisive song at 5.33, but it also has the highest z-score at 3.9. Similarly, the top 10 most divisive songs all have abnormally high z-scores. This further strengthens my initial claim that it is relatively uncommon for a song to be very divisive and end up topping the Hot 100. To further support this, I found the median of all the z-scores, which was -.23. This shows that the most common z-score in the data was -.23, which is very close to the mean. Based on these findings, I think that I cannot reject my null hypothesis, as it seems that there is not a notable level of variation in the divisiveness category.
+
+```{r}
+Divisive_Songs <- Songs |>
+  mutate(
+    mean_divisiveness = mean(divisiveness),
+    sd_divisiveness = sd(divisiveness),
+    mean_weeks = mean(`weeks_at_number_one`),
+    median_weeks = median(weeks_at_number_one),
+    z_score = (divisiveness - mean_divisiveness) / sd_divisiveness,
+    median_z = median(z_score),
+    mean_rating_1 = mean(rating_1),
+    median_rating_1 = median(`rating_1`),
+    sd_rating_1 = sd(`rating_1`),
+    mean_rating_2 = mean(`rating_2`),
+    median_rating_2 = median(`rating_2`),
+    sd_rating_2 = sd(`rating_2`),
+    mean_rating_3 = mean(`rating_3`),
+    median_rating_3 = median(`rating_3`),
+    sd_rating_3 = sd(`rating_3`)
+    
+    
+    
+    ) |> 
+  select(song, artist, date, weeks_at_number_one, mean_weeks, median_weeks, divisiveness, z_score, median_z, mean_divisiveness, rating_1, rating_2, rating_3, sd_divisiveness, mean_rating_1, mean_rating_2, mean_rating_3, median_rating_1, median_rating_2, median_rating_3, sd_rating_1, sd_rating_2, sd_rating_3)
+```
+
+
+
+Although my z-test gave me vital information on the nature of the divisiveness category, it did not answer my initial question, which is whether or not divisiveness has a statistically significant impact on the length of time a song spends on top of the Hot 100. My null and alternative hypotheses were as follows:
+NULL HYPOTHESIS: The "divisiveness" category has no impact on how long a song remained at number 1 on the Billboard Hot 100
+ALTERNATE HYPOTHESIS: The "divisiveness" category has a statistically significant impact on how long a song remained at number 1 on the Billboard Hot 100.
+To answer this, I decided to analyze the linear regression of the "divisiveness" and the "weeks at number one" categories. I set this up by testing the effect of "divisiveness," my independent variable, on "weeks at number one," my dependent variable. This test revealed a p-value of .173 for "divisiveness"'s impact on "weeks_at_number_one". This value is larger than the accepted significance value of .05. What this means is that I cannot reject my null hypothesis, and a songs divisiveness, as defined by this dataset, does not have a statistically significant impact on how long it will stay at the top of the Hot 100. I cannot say with confidence that a songs divisiveness can be solely responsible for the duration of time it spends on top of the Hot 100.
+```{r}
+regression <- lm(weeks_at_number_one ~ divisiveness, data= Songs)
+print(summary(regression))
+```
+
+
+
+
+I chose to use a boxplot to represent the relationship between "divisiveness" and "weeks at number one". I am not too surprised by the results, as it shows a significant number of songs clustered at under a score of 2 on the divisiveness scale. 1.55 is the mean for divisiveness scores, so the fact that so much of the data would cluster around this value is not surprising to me. It also lines up with the standard deviation. Regarding the huge concentration of songs with under 5 weeks spent atop the Hot 100, this is also not surprising to me. In my analysis of the z-scores, I also found the mean and median number of weeks that a song spent atop the Hot 100. They were 2.9 and 2 respectively. Songs generally don't spend a lot of time at the top of the Hot 100, regardless of their divisiveness, so it makes sense that the graph shows this as well.
+
+
+```{r}
+Songs |>
+  ggplot(aes(x=weeks_at_number_one, y=divisiveness)) + 
+         geom_boxplot() +
+         geom_jitter(width=2)
+
+```
